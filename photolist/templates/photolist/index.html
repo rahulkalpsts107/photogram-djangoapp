@@ -1,0 +1,82 @@
+{% load static %}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="Photogram-Rahul Ramesh">
+
+
+<link rel="stylesheet" type="text/css" href="{% static 'photolist/css/styles.css' %}" />
+<link href="{% static 'photolist/css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
+<link href="{% static 'photolist/css/thumbnail-gallery.css' %}" rel="stylesheet" media="screen">
+
+<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+<script  src="{% static 'photolist/js/bootstrap.js' %}"></script>
+
+<body>
+
+<h2>Welcome Back {{ username }} !</h2>
+<span class="align-right">
+	<a href="logout">Logout</a>
+</span>
+
+<div class="container">
+	<img src="{% static 'photolist/img/add.png' %}" alt="Upload" height="42" width="42" style="float:left;"/>
+
+	<form class="form-inline" action="#" method="post" enctype="multipart/form-data">
+        {% csrf_token %} {{form}} 
+        <input type="submit" value="Upload" />
+	</form>
+	<div class="row">
+	    <div class="col-lg-12">
+	        <h1 class="page-header">{{ username }}'s Photos</h1>
+	    </div>
+	</div>
+
+
+{% if latest_photo_list %}
+    <ul>
+    {% for photo in latest_photo_list %}
+        <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+        		<div class="container-fluid bg-3 text-center">
+        			<h3>{{photo.caption}}</h3>
+        		</div>
+                <a class="thumbnail" href="#">
+                    <img class="img-responsive" src="media/{{photo.docfile}}" alt="">
+                </a>
+        </div>
+        <a href="delete?id={{photo.id}}" onclick="return confirm('Are you sure you want to delete?');">Delete</a>
+        <input type="button" onclick="var t = prompt('Edit Caption', '{{photo.caption}}'); if (t!= null) window.location.href='edit?id={{photo.id}}&caption='+t " value='Edit Comment'></input>
+    {% endfor %}
+    </ul>
+    <div class="pagination">
+	    <span class="step-links">
+	        {% if latest_photo_list.has_previous %}
+	            <a href="?page={{ latest_photo_list.previous_page_number }}">previous</a>
+	        {% endif %}
+
+	        <span class="current">
+	            Page {{ latest_photo_list.number }} of {{ latest_photo_list.paginator.num_pages }}.
+	        </span>
+
+	        {% if latest_photo_list.has_next %}
+	            <a href="?page={{ latest_photo_list.next_page_number }}">next</a>
+	        {% endif %}
+	    </span>
+	</div>
+{% else %}
+    <p style="float:left;">You have no photos yet, Upload something! .</p>
+{% endif %}
+	</div>
+	<hr>
+	<footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Photogram	 2016</p>
+                </div>
+            </div>
+	</footer>
+</div>
+</body>

@@ -1,0 +1,21 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'photolist/css/styles.css' %}" />
+<link href="{% static 'photolist/css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
+<script src="http://code.jquery.com/jquery.js"></script>
+<script  src="{% static 'photolist/js/bootstrap.min.js' %}"></script>
+
+<h1>Login</h1>
+
+<form action="{% url 'login' %}" method="post">
+	{% csrf_token %}
+	<p>
+		<label > Your username </label>
+		<input type = "text" name = "username" />
+	</p>
+	<p>
+		<label> Your password </label>
+		<input type = "password" name = "password" />
+	</p>
+<input type="submit" value="Login" />
+</form>
+<li><a href="/photogram/register/">Not a member? , Click here to Register</a></li>
